@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-12 Sat 21:40 -->
+<!-- 2020-09-12 Sat 22:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
@@ -224,21 +224,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga264dfe">Introduction</a></li>
-<li><a href="#org9f4708a">Algorithm</a></li>
-<li><a href="#org5e014ab">Ansatz</a></li>
-<li><a href="#org2a1ee9a">Pauli Decomposition</a></li>
-<li><a href="#org1e984fa">Optimization</a></li>
-<li><a href="#org5cf691d">Simulation</a></li>
-<li><a href="#org7351fa1">Visualization</a></li>
-<li><a href="#org025d386">Conclusion</a></li>
+<li><a href="#org1a14fbf">Introduction</a></li>
+<li><a href="#org3485a02">Algorithm</a></li>
+<li><a href="#org2521433">Ansatz</a></li>
+<li><a href="#orgeb579d3">Pauli Decomposition</a></li>
+<li><a href="#org3d1a9a8">Optimization</a></li>
+<li><a href="#org3ec39ef">Simulation</a></li>
+<li><a href="#orgd7ab086">Visualization</a></li>
+<li><a href="#orgf92197c">Conclusion</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga264dfe" class="outline-2">
-<h2 id="orga264dfe">Introduction</h2>
-<div class="outline-text-2" id="text-orga264dfe">
+<div id="outline-container-org1a14fbf" class="outline-2">
+<h2 id="org1a14fbf">Introduction</h2>
+<div class="outline-text-2" id="text-org1a14fbf">
 <p>
 Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
 algorithm that can be used on NISQ devices to find the ground states of various
@@ -291,9 +291,9 @@ like VQE.
 </div>
 </div>
 
-<div id="outline-container-org9f4708a" class="outline-2">
-<h2 id="org9f4708a">Algorithm</h2>
-<div class="outline-text-2" id="text-org9f4708a">
+<div id="outline-container-org3485a02" class="outline-2">
+<h2 id="org3485a02">Algorithm</h2>
+<div class="outline-text-2" id="text-org3485a02">
 <p>
 The VQE algorithm can be broken down in to the following steps:
 </p>
@@ -319,9 +319,9 @@ to determine \({θ_i^{n+1}}\).</li>
 </div>
 </div>
 
-<div id="outline-container-org5e014ab" class="outline-2">
-<h2 id="org5e014ab">Ansatz</h2>
-<div class="outline-text-2" id="text-org5e014ab">
+<div id="outline-container-org2521433" class="outline-2">
+<h2 id="org2521433">Ansatz</h2>
+<div class="outline-text-2" id="text-org2521433">
 <p>
 There are two things that the user can choose in this algorithm: the initial
 state, and the classical minimization algorithm. Of this, it turns out, the
@@ -378,9 +378,9 @@ versions the blocks just appear once.
 </div>
 </div>
 
-<div id="outline-container-org2a1ee9a" class="outline-2">
-<h2 id="org2a1ee9a">Pauli Decomposition</h2>
-<div class="outline-text-2" id="text-org2a1ee9a">
+<div id="outline-container-orgeb579d3" class="outline-2">
+<h2 id="orgeb579d3">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-orgeb579d3">
 <p>
 One caveat of using VQE is that in general it is not easy to calculate the
 expectation value of the Hamiltonian. However if the Hamiltonian can be
@@ -441,9 +441,9 @@ respect to any given ansatz.
 </div>
 </div>
 
-<div id="outline-container-org1e984fa" class="outline-2">
-<h2 id="org1e984fa">Optimization</h2>
-<div class="outline-text-2" id="text-org1e984fa">
+<div id="outline-container-org3d1a9a8" class="outline-2">
+<h2 id="org3d1a9a8">Optimization</h2>
+<div class="outline-text-2" id="text-org3d1a9a8">
 <p>
 Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
@@ -456,9 +456,9 @@ is ubiquitous on a NISQ device. SPSA is implemented in <code>vqe/optimizers.py</
 </div>
 </div>
 
-<div id="outline-container-org5cf691d" class="outline-2">
-<h2 id="org5cf691d">Simulation</h2>
-<div class="outline-text-2" id="text-org5cf691d">
+<div id="outline-container-org3ec39ef" class="outline-2">
+<h2 id="org3ec39ef">Simulation</h2>
+<div class="outline-text-2" id="text-org3ec39ef">
 <p>
 We will do these simulations with the <code>qasm_simulator</code> backend provided by
 Qiskit, initially without noise. First we will demonstrate VQE with the single
@@ -613,9 +613,9 @@ the Hamiltonian. But we still come close to it.
 </div>
 </div>
 
-<div id="outline-container-org7351fa1" class="outline-2">
-<h2 id="org7351fa1">Visualization</h2>
-<div class="outline-text-2" id="text-org7351fa1">
+<div id="outline-container-orgd7ab086" class="outline-2">
+<h2 id="orgd7ab086">Visualization</h2>
+<div class="outline-text-2" id="text-orgd7ab086">
 <p>
 We can see the progress of the optimization, which might give us some insights
 into VQE.
@@ -625,10 +625,10 @@ into VQE.
 <pre class="src src-jupyter-python">iters = np.arange(0, maxiter + save_steps, save_steps)
 
 fig, ax = plt.subplots(figsize=(10, 8))
-ax.plot(iters, result_yz['log']['fevals'], color='darkorange', linestyle='solid', label='RYRZ (w/o noise)')
-ax.plot(iters, result_yz_noisy['log']['fevals'], color='darkorange', linestyle='dashed', label='RYRZ (w/ noise)')
-ax.plot(iters, result_x['log']['fevals'], color='dodgerblue', linestyle='solid', label='RX (w/o noise)')
-ax.plot(iters, result_x_noisy['log']['fevals'], color='dodgerblue', linestyle='dashed', label='RX (w/ noise)')
+ax.plot(iters, result_yz["log"]["fevals"], color="darkorange", linestyle="solid", label="RYRZ (noiseless)")
+ax.plot(iters, result_yz_noisy["log"]["fevals"], color="darkorange", linestyle="dashed", label="RYRZ (noisy)")
+ax.plot(iters, result_x["log"]["fevals"], color="dodgerblue", linestyle="solid", label="RX (noiseless)")
+ax.plot(iters, result_x_noisy["log"]["fevals"], color="dodgerblue", linestyle="dashed", label="RX (noisy)")
 ax.set_xlabel("Iterations")
 ax.set_ylabel("Energy")
 ax.legend()
@@ -662,9 +662,9 @@ then we might be able to correct for it.</li>
 </div>
 </div>
 
-<div id="outline-container-org025d386" class="outline-2">
-<h2 id="org025d386">Conclusion</h2>
-<div class="outline-text-2" id="text-org025d386">
+<div id="outline-container-orgf92197c" class="outline-2">
+<h2 id="orgf92197c">Conclusion</h2>
+<div class="outline-text-2" id="text-orgf92197c">
 <p>
 We demonstrated the VQE algorithm with a quantum simulator. We showed that it
 gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
