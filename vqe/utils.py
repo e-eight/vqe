@@ -18,12 +18,12 @@ def pauli_decomposition(H):
     Pauli matrices.
 
     Args:
-        H (numpy.array): A Hermitian matrix of dimension (2^n x 2^n).
+        H (ndarray): Hermitian matrix of dimension (2^n x 2^n).
 
     Returns:
-        components (collections.defaultdict): A dictionary of tensor products of
-        Pauli matrices, and corresponding coefficients (non-zero) that
-        decomposes the Hermitian matrix.
+        components (defaultdict): Dictionary with tensor products of Pauli
+        matrices as keys, and corresponding (non-zero) coefficients as values,
+        that decompose H.
     """
     n = int(np.log2(len(H)))
     dims = 2 ** n

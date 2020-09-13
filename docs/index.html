@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-12 Sat 22:19 -->
+<!-- 2020-09-13 Sun 10:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
@@ -193,7 +193,7 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="css/worg.css" />
+<link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         displayAlign: "center",
@@ -224,21 +224,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb17f30f">Introduction</a></li>
-<li><a href="#org18d4fcc">Algorithm</a></li>
-<li><a href="#org22b6066">Ansatz</a></li>
-<li><a href="#org215660d">Pauli Decomposition</a></li>
-<li><a href="#org99613ee">Optimization</a></li>
-<li><a href="#orgc826c87">Simulation</a></li>
-<li><a href="#orgeccf549">Visualization</a></li>
-<li><a href="#org86b0c69">Conclusion</a></li>
+<li><a href="#org3bf744c">Introduction</a></li>
+<li><a href="#org125ebda">Algorithm</a></li>
+<li><a href="#org7efab34">Ansatz</a></li>
+<li><a href="#org1863c07">Pauli Decomposition</a></li>
+<li><a href="#org8405a86">Optimization</a></li>
+<li><a href="#org869fd7a">Simulation</a></li>
+<li><a href="#org9ac9005">Visualization</a></li>
+<li><a href="#orgdaa0d67">Conclusion</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb17f30f" class="outline-2">
-<h2 id="orgb17f30f">Introduction</h2>
-<div class="outline-text-2" id="text-orgb17f30f">
+<div id="outline-container-org3bf744c" class="outline-2">
+<h2 id="org3bf744c">Introduction</h2>
+<div class="outline-text-2" id="text-org3bf744c">
 <p>
 Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
 algorithm that can be used on NISQ devices to find the ground states of various
@@ -291,9 +291,9 @@ like VQE.
 </div>
 </div>
 
-<div id="outline-container-org18d4fcc" class="outline-2">
-<h2 id="org18d4fcc">Algorithm</h2>
-<div class="outline-text-2" id="text-org18d4fcc">
+<div id="outline-container-org125ebda" class="outline-2">
+<h2 id="org125ebda">Algorithm</h2>
+<div class="outline-text-2" id="text-org125ebda">
 <p>
 The VQE algorithm can be broken down in to the following steps:
 </p>
@@ -319,9 +319,9 @@ to determine \({θ_i^{n+1}}\).</li>
 </div>
 </div>
 
-<div id="outline-container-org22b6066" class="outline-2">
-<h2 id="org22b6066">Ansatz</h2>
-<div class="outline-text-2" id="text-org22b6066">
+<div id="outline-container-org7efab34" class="outline-2">
+<h2 id="org7efab34">Ansatz</h2>
+<div class="outline-text-2" id="text-org7efab34">
 <p>
 There are two things that the user can choose in this algorithm: the initial
 state, and the classical minimization algorithm. Of this, it turns out, the
@@ -378,9 +378,9 @@ versions the blocks just appear once.
 </div>
 </div>
 
-<div id="outline-container-org215660d" class="outline-2">
-<h2 id="org215660d">Pauli Decomposition</h2>
-<div class="outline-text-2" id="text-org215660d">
+<div id="outline-container-org1863c07" class="outline-2">
+<h2 id="org1863c07">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-org1863c07">
 <p>
 One caveat of using VQE is that in general it is not easy to calculate the
 expectation value of the Hamiltonian. However if the Hamiltonian can be
@@ -402,10 +402,11 @@ the basis of tensor products of Pauli matrices is given by
 </p>
 \begin{align}
 a_{i_1 i_2 ⋯ i_n}
-= \frac{1}{2^n} \mathrm{tr}((σ_{i_1} ⊗ σ_{i_2} ⊗ ⋯ σ_{i_n})A),
+= \frac{1}{2^n} \mathrm{Tr}((σ_{i_1} ⊗ σ_{i_2} ⊗ ⋯ σ_{i_n})A),
 \end{align}
 <p>
-where \(σ_{i_j} ∈ \{I, X, Y, Z\}\). The factor of \(\frac{1}{2^n}\) is to normalize
+where \(σ_{i_j} ∈ \{I, X, Y, Z\}\), and \(\mathrm{Tr}\) represents the trace of
+a matrix<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>. The factor of \(\frac{1}{2^n}\) is to normalize
 the Pauli matrices. The function <code>pauli_decomposition</code> in
 <code>vqe/utils.py</code> does this decomposition for any \(2^n × 2^n\) Hermitian
 matrix. Here is the decomposition of our Hamiltonian \(H\):
@@ -434,31 +435,54 @@ matrices have only two eigenvalues, \(±1\). The expectation value of a tensor
 product of Pauli matrices can be calculated on a quantum computer as
 \(\tfrac{(N_+ - N_-)}{N}\), where \(N_±\) is the number of measured eigenvectors
 corresponding to the eigenvalue \(±1\) and \(N\) is the total number of
-measurements<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>. The function <code>energy</code> in <code>vqe/vqe.py</code> computes the
+measurements<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup>. The function <code>energy</code> in <code>vqe/vqe.py</code> computes the
 expectation value of any Hamiltonian which has a Pauli decomposition with
 respect to any given ansatz.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org99613ee" class="outline-2">
-<h2 id="org99613ee">Optimization</h2>
-<div class="outline-text-2" id="text-org99613ee">
+<div id="outline-container-org8405a86" class="outline-2">
+<h2 id="org8405a86">Optimization</h2>
+<div class="outline-text-2" id="text-org8405a86">
 <p>
 Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
 preferred methods for these problems since it will be difficult to calculate the
 derivative of the objective function. For problems like VQE, SPSA or
-Simultaneous Perturbation Stochastic Algorithm<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup> might be the most suitable, since
-it scales well to large problems (unlike COBYLA), and accounts for noise which
-is ubiquitous on a NISQ device. SPSA is implemented in <code>vqe/optimizers.py</code>.
+Simultaneous Perturbation Stochastic Approximation<sup><a id="fnr.6" class="footref" href="#fn.6">6</a></sup> might be the most
+suitable, since it scales well to large problems (unlike COBYLA), and accounts
+for noise which is ubiquitous on a NISQ device. The basic SPSA algorithm is as
+follows:
+</p>
+
+<ol class="org-ol">
+<li>Start with an initial guess for the optimization parameters \(θ = \{θ_i\}\).</li>
+
+<li><p>
+For \(N\) iterations update the parameters as: \(θ_i(n + 1) = θ_i(n) - a(n)
+   g(n)\), where \(g(n)\) is an approximation of the gradient of the objective
+function \(f(θ)\) given by
+</p>
+\begin{align}
+g(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
+\end{align}
+<p>
+Here \(Δ(n) = \{Δ_i(n)\}\) is a vector of random numbers sampled from a
+Bernoulli (\(±1\)) distribution, with probability \(p\), and \(a(n)\), and
+\(c(n)\) are step size sequences which are chosen satisfying some criteria.
+</p></li>
+</ol>
+
+<p>
+SPSA is implemented in <code>vqe/optimizers.py</code>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc826c87" class="outline-2">
-<h2 id="orgc826c87">Simulation</h2>
-<div class="outline-text-2" id="text-orgc826c87">
+<div id="outline-container-org869fd7a" class="outline-2">
+<h2 id="org869fd7a">Simulation</h2>
+<div class="outline-text-2" id="text-org869fd7a">
 <p>
 We will do these simulations with the <code>qasm_simulator</code> backend provided by
 Qiskit, initially without noise. First we will demonstrate VQE with the single
@@ -613,9 +637,9 @@ the Hamiltonian. But we still come close to it.
 </div>
 </div>
 
-<div id="outline-container-orgeccf549" class="outline-2">
-<h2 id="orgeccf549">Visualization</h2>
-<div class="outline-text-2" id="text-orgeccf549">
+<div id="outline-container-org9ac9005" class="outline-2">
+<h2 id="org9ac9005">Visualization</h2>
+<div class="outline-text-2" id="text-org9ac9005">
 <p>
 We can see the progress of the optimization, which might give us some insights
 into VQE.
@@ -662,9 +686,9 @@ then we might be able to correct for it.</li>
 </div>
 </div>
 
-<div id="outline-container-org86b0c69" class="outline-2">
-<h2 id="org86b0c69">Conclusion</h2>
-<div class="outline-text-2" id="text-org86b0c69">
+<div id="outline-container-orgdaa0d67" class="outline-2">
+<h2 id="orgdaa0d67">Conclusion</h2>
+<div class="outline-text-2" id="text-orgdaa0d67">
 <p>
 We demonstrated the VQE algorithm with a quantum simulator. We showed that it
 gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
@@ -712,12 +736,35 @@ Physical Review Letters 120.21 (2018). <a href="https://arxiv.org/abs/1801.03897
 </p></div></div>
 
 <div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+To see why the trace is necessary think of the matrix as a one
+dimensional vector:
+</p>
+\begin{align}
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+→
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d
+\end{bmatrix}.
+\end{align}
+<p class="footpara">
+This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as a Hilbert-Schmidt
+inner product which turns the vector space of those matrices in to a Hilbert
+space. Some details can be found in chapter 2 of <a href="https://dl.acm.org/doi/book/10.5555/1972505">Nielsen &amp; Chuang</a>.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
 For more details on making measurements with tensor products of Pauli
 operators check out this excellent <a href="https://quantumcomputing.stackexchange.com/a/13675/12785">answer</a> by Davit Kachatryan and
 <a href="https://docs.microsoft.com/en-us/quantum/concepts/pauli-measurements">Pauli Measurements</a> by Microsoft Quantum.
 </p></div></div>
 
-<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+<div class="footdef"><sup><a id="fn.6" class="footnum" href="#fnr.6">6</a></sup> <div class="footpara"><p class="footpara">
 Check <a href="https://www.jhuapl.edu/SPSA/">https://www.jhuapl.edu/SPSA/</a> and
 <a href="https://www.csa.iisc.ac.in/~shalabh/book.html">https://www.csa.iisc.ac.in/~shalabh/book.html</a> for details on SPSA.
 </p></div></div>

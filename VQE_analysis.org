@@ -1,7 +1,7 @@
 #+TITLE: Lowest eigenvalue with Variational Quantum Eigensolver
 #+AUTHOR: Soham Pal
 #+OPTIONS: html-postamble:nil html-scripts:nil html-doctype:html5 num:nil
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="css/worg.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
 #+PROPERTY: header-args :tangle main.py :jupyter-python :session py :kernel .qiskit-venv :async yes :exports both
 
 #+begin_src jupyter-python :results silent :exports none
@@ -130,9 +130,10 @@ general for a \(2^n × 2^n\) Hermitian matrix A, the coefficients of expansion i
 the basis of tensor products of Pauli matrices is given by
 \begin{align}
 a_{i_1 i_2 ⋯ i_n}
-= \frac{1}{2^n} \mathrm{tr}((σ_{i_1} ⊗ σ_{i_2} ⊗ ⋯ σ_{i_n})A),
+= \frac{1}{2^n} \mathrm{Tr}((σ_{i_1} ⊗ σ_{i_2} ⊗ ⋯ σ_{i_n})A),
 \end{align}
-where \(σ_{i_j} ∈ \{I, X, Y, Z\}\). The factor of \(\frac{1}{2^n}\) is to normalize
+where \(σ_{i_j} ∈ \{I, X, Y, Z\}\), and \(\mathrm{Tr}\) represents the trace of
+a matrix[fn:4]. The factor of \(\frac{1}{2^n}\) is to normalize
 the Pauli matrices. The function =pauli_decomposition= in
 =vqe/utils.py= does this decomposition for any \(2^n × 2^n\) Hermitian
 matrix. Here is the decomposition of our Hamiltonian \(H\):
@@ -156,7 +157,7 @@ matrices have only two eigenvalues, \(±1\). The expectation value of a tensor
 product of Pauli matrices can be calculated on a quantum computer as
 \(\tfrac{(N_+ - N_-)}{N}\), where \(N_±\) is the number of measured eigenvectors
 corresponding to the eigenvalue \(±1\) and \(N\) is the total number of
-measurements[fn:4]. The function =energy= in =vqe/vqe.py= computes the
+measurements[fn:5]. The function =energy= in =vqe/vqe.py= computes the
 expectation value of any Hamiltonian which has a Pauli decomposition with
 respect to any given ansatz.
 
@@ -166,9 +167,24 @@ Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
 preferred methods for these problems since it will be difficult to calculate the
 derivative of the objective function. For problems like VQE, SPSA or
-Simultaneous Perturbation Stochastic Algorithm[fn:5] might be the most suitable, since
-it scales well to large problems (unlike COBYLA), and accounts for noise which
-is ubiquitous on a NISQ device. SPSA is implemented in =vqe/optimizers.py=.
+Simultaneous Perturbation Stochastic Approximation[fn:6] might be the most
+suitable, since it scales well to large problems (unlike COBYLA), and accounts
+for noise which is ubiquitous on a NISQ device. The basic SPSA algorithm is as
+follows:
+
+1. Start with an initial guess for the optimization parameters \(θ = \{θ_i\}\).
+
+2. For \(N\) iterations update the parameters as: \(θ_i(n + 1) = θ_i(n) - a(n)
+   g(n)\), where \(g(n)\) is an approximation of the gradient of the objective
+   function \(f(θ)\) given by
+   \begin{align}
+   g(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
+   \end{align}
+   Here \(Δ(n) = \{Δ_i(n)\}\) is a vector of random numbers sampled from a
+   Bernoulli (\(±1\)) distribution, with probability \(p\), and \(a(n)\), and
+   \(c(n)\) are step size sequences which are chosen satisfying some criteria.
+
+SPSA is implemented in =vqe/optimizers.py=.
 
 * Simulation
 
@@ -374,9 +390,28 @@ variational quantum eigensolver for small molecules and quantum magnets. Nature
 [fn:3] Dumitrescu, E. F. /et al./ Cloud Quantum Computing of an Atomic Nucleus.”
 Physical Review Letters 120.21 (2018). [[https://arxiv.org/abs/1801.03897][https://arxiv.org/abs/1801.03897]]
 
-[fn:4] For more details on making measurements with tensor products of Pauli
+[fn:4] To see why the trace is necessary think of the matrix as a one
+dimensional vector:
+\begin{align}
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+→
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d
+\end{bmatrix}.
+\end{align}
+This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as a Hilbert-Schmidt
+inner product which turns the vector space of those matrices in to a Hilbert
+space. Some details can be found in chapter 2 of [[https://dl.acm.org/doi/book/10.5555/1972505][Nielsen & Chuang]].
+
+[fn:5] For more details on making measurements with tensor products of Pauli
 operators check out this excellent [[https://quantumcomputing.stackexchange.com/a/13675/12785][answer]] by Davit Kachatryan and
 [[https://docs.microsoft.com/en-us/quantum/concepts/pauli-measurements][Pauli Measurements]] by Microsoft Quantum.
 
-[fn:5] Check [[https://www.jhuapl.edu/SPSA/]] and
+[fn:6] Check [[https://www.jhuapl.edu/SPSA/]] and
 [[https://www.csa.iisc.ac.in/~shalabh/book.html]] for details on SPSA.

@@ -38,9 +38,9 @@ class SPSA:
 
         Args:
             fun (callable): The objective function to be minimized.
-                ``fun(x, *args) -> float``
-            where ``x`` is an 1D array with shape (n,) and ``args`` is a tuple
-            of fixed parameters needed to completely specify the function.
+                ``fun(x, **kwargs) -> float``
+            where ``x`` is an 1D array with shape (n,) and ``kwargs`` are
+            additional parameters needed to completely specify the function.
 
             x0 (ndarray, shape (n,)): Initial guess. Array of real elements of
             size (n,), where 'n' is the number of independent variables.
