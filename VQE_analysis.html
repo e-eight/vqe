@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-09-12 Sat 20:14 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Soham Pal" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="css/worg.css" />
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Lowest eigenvalue with Variational Quantum Eigensolver</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orge28b122">Introduction</a></li>
+<li><a href="#org9e86af9">Algorithm</a></li>
+<li><a href="#orgff59052">Ansatz</a></li>
+<li><a href="#org7c9374a">Pauli Decomposition</a></li>
+<li><a href="#org50206e0">Optimization</a></li>
+<li><a href="#orgbeb8bdc">Simulation</a></li>
+<li><a href="#org2d4f29b">Visualization</a></li>
+<li><a href="#orgef49779">Conclusion</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge28b122" class="outline-2">
+<h2 id="orge28b122">Introduction</h2>
+<div class="outline-text-2" id="text-orge28b122">
+<p>
+Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
+algorithm that can be used on NISQ devices to find the ground states of various
+quantum mechanical systems, most notably used in quantum chemistry<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup> and
+nuclear physics<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>. Here we will see a demonstration of the variational
+quantum eigensolver with the Hamiltonian
+</p>
+\begin{align}
+H = \begin{bmatrix}
+  1 & 0 & 0 & 0\\
+  0 & 0 & -1 & 0\\
+  0 & -1 & 0 & 0\\
+  0 & 0 & 0 & 1
+  \end{bmatrix},
+\end{align}
+<p>
+whose eigenvalues can be calculated easily on a classical computer:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">import numpy as np
+
+H = np.zeros(shape=(4, 4))
+H[0, 0] = H[3, 3] = 1
+H[1, 2] = H[2, 1] = -1
+
+print("Hamiltonian:")
+print(H)
+
+print(f"Eigenvalues: {np.linalg.eigvals(H)}")
+</pre>
+</div>
+
+<pre class="example">
+Hamiltonian:
+[[ 1.  0.  0.  0.]
+ [ 0.  0. -1.  0.]
+ [ 0. -1.  0.  0.]
+ [ 0.  0.  0.  1.]]
+Eigenvalues: [ 1. -1.  1.  1.]
+</pre>
+
+
+<p>
+The minimum eigenvalue is -1. While the eigenvalues for this Hamiltonian could
+be calculated easily on a classical computer, this is not generally true for
+Hamiltonians of interest in physics and chemistry. Hence the need for algorithms
+like VQE.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9e86af9" class="outline-2">
+<h2 id="org9e86af9">Algorithm</h2>
+<div class="outline-text-2" id="text-org9e86af9">
+<p>
+The VQE algorithm can be broken down in to the following steps:
+</p>
+
+<ol class="org-ol">
+<li>Design a quantum circuit, controlled by a set of parameters
+\({θ_i}\), and prepare the initial state \(|ψ^0〉\) with this circuit. This
+is known as the ansatz.</li>
+
+<li>Define the objective function \(f({θ_i^n}) =
+   ⟨ψ({θ_i^n})|H|ψ({θ_i^n})⟩\), that is the expectation value of the
+Hamiltonian with respect the ansatz.</li>
+
+<li>Let \(n = 0\).</li>
+
+<li>Repeat until optimization is completed:
+<ol class="org-ol">
+<li>Calculate \(f({θ_i^n})\) on the quantum computer.</li>
+<li>Feed \(f({θ_i^n})\) to a classical minimization algorithm, and allow it
+to determine \({θ_i^{n+1}}\).</li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgff59052" class="outline-2">
+<h2 id="orgff59052">Ansatz</h2>
+<div class="outline-text-2" id="text-orgff59052">
+<p>
+There are two things that the user can choose in this algorithm: the initial
+state, and the classical minimization algorithm. Of this, it turns out, the
+initial state (ansatz) is the most important. The selection of a particular
+ansatz are usually determined by the choice of the hardware, and the features of
+the problem, such as the symmetries of the Hamiltonian. For computation on NISQ
+devices, the hardware is usually the dominating factor. We will consider two
+ansatzes for this demonstration. The first is parameterized by RY and RZ
+gates. This is a special case of the hardware efficient ansatz described in the
+paper by Kandala <i>et al.</i>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">from vqe.vqe import RYRZAnsatz, RXAnsatz
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 4))
+RYRZAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
+fig.suptitle("RYRZ ansatz with 3 repetitions")
+fig.savefig("img/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
+plt.close()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="img/ryrz_ansatz.png" alt="ryrz_ansatz.png" />
+</p>
+</div>
+
+<p>
+The second ansatz is parameterized by RX gates.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">fig, ax = plt.subplots(figsize=(6, 4))
+RXAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
+fig.suptitle("RX ansatz with 3 repetitions")
+fig.savefig("img/rx_ansatz.png", dpi=90, bbox_inches="tight")
+plt.close()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="img/rx_ansatz.png" alt="rx_ansatz.png" />
+</p>
+</div>
+
+<p>
+These were the multi-layer versions of the ansatzes. In the single-layer
+versions the blocks just appear once.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org7c9374a" class="outline-2">
+<h2 id="org7c9374a">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-org7c9374a">
+<p>
+One caveat of using VQE is that in general it is not easy to calculate the
+expectation value of the Hamiltonian. However if the Hamiltonian can be
+expressed as a linear sum of tensor products of the Pauli matrices \((I, X, Y,
+Z)\), then we can easily calculate the expectation value of the
+Hamiltonian. Tensor products of Pauli matrices, \(\{\{I, X, Y, Z\}^{⊗n}\}\),
+form an orthogonal basis for the vector space of \(2^n × 2^n\) Hermitian
+matrices. Thus any \(2^n × 2^n\) Hermitian matrix can be expressed as a linear
+sum of tensor products of Pauli matrices. For example, for n = 1, consider the
+Hermitian matrix
+</p>
+\begin{align}
+A = \begin{bmatrix} 2 & 1 \\ 1 & -3 \end{bmatrix}.
+\end{align}
+<p>
+This matrix can be expressed as \(A = -\tfrac{1}{2}I + X + \tfrac{5}{2}Z\). In
+general for a \(2^n × 2^n\) Hermitian matrix A, the coefficients of expansion in
+the basis of tensor products of Pauli matrices is given by
+</p>
+\begin{align}
+a_{i_1 i_2 ⋯ i_n}
+= \frac{1}{2^n} \mathrm{tr}((σ_{i_1} ⊗ σ_{i_2} ⊗ ⋯ σ_{i_n})A),
+\end{align}
+<p>
+where \(σ_{i_j} ∈ \{I, X, Y, Z\}\). The factor of \(\frac{1}{2^n}\) is to normalize
+the Pauli matrices. The function <code>pauli_decomposition</code> in
+<code>vqe/utils.py</code> does this decomposition for any \(2^n × 2^n\) Hermitian
+matrix. Here is the decomposition of our Hamiltonian \(H\):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">from vqe.utils import pauli_decomposition
+
+pauli_decomposition(H)
+</pre>
+</div>
+
+<pre class="example">
+defaultdict(int, {'II': 0.5, 'XX': -0.5, 'YY': -0.5, 'ZZ': 0.5})
+</pre>
+
+
+<p>
+We can express our Hamiltonian as \(H = \tfrac{1}{2}(II + ZZ - XX - YY)\). Thus
+\(〈H〉 = \tfrac{1}{2}(〈II〉 + 〈ZZ〉 - 〈XX〉 - 〈YY〉)\), where \(〈O〉 =
+〈ψ|O|ψ〉\) is the expectation value of the observable \(O\). Since the
+expectation value of \(II\) is always \(1\), therefore this boils down to
+calculating the expectation values of \(ZZ\), \(XX\), and \(YY\), and then doing
+the weighted sum of all the four expectation values. Tensor products of Pauli
+matrices have only two eigenvalues, \(±1\). The expectation value of a tensor
+product of Pauli matrices can be calculated on a quantum computer as
+\(\tfrac{(N_+ - N_-)}{N}\), where \(N_±\) is the number of measured eigenvectors
+corresponding to the eigenvalue \(±1\) and \(N\) is the total number of
+measurements<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>. The function <code>energy</code> in <code>vqe/vqe.py</code> computes the
+expectation value of any Hamiltonian which has a Pauli decomposition with
+respect to any given ansatz.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org50206e0" class="outline-2">
+<h2 id="org50206e0">Optimization</h2>
+<div class="outline-text-2" id="text-org50206e0">
+<p>
+Any classical optimization algorithm can be used in VQE, with varying degrees of
+success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
+preferred methods for these problems since it will be difficult to calculate the
+derivative of the objective function. For problems like VQE, SPSA or
+Simultaneous Perturbation Stochastic Algorithm might be the most suitable, since
+it scales well to large problems (unlike COBYLA), and accounts for noise which
+is ubiquitous on a NISQ device. SPSA is implemented in <code>vqe/optimizers.py</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgbeb8bdc" class="outline-2">
+<h2 id="orgbeb8bdc">Simulation</h2>
+<div class="outline-text-2" id="text-orgbeb8bdc">
+<p>
+We will do these simulations with the <code>qasm_simulator</code> backend provided by
+Qiskit, initially without noise. First we will demonstrate VQE with the single
+layer RYRZ ansatz, and then with the single layer RX ansatz.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">from vqe.vqe import energy
+from vqe.optimizers import SPSA
+
+
+# The expectation value of the Hamiltonian
+def parameterized_energy(params, H, ansatz, **kwargs):
+    return energy(H, ansatz, params=params, **kwargs)
+
+
+# Random number generator
+seed = 42
+rng = np.random.default_rng(seed)
+
+# Optimizer
+maxiter = 1000
+save_steps = 50
+a = 2 * np.pi * 0.1
+c = 0.1
+A = 0.0001
+spsa = SPSA(a=a, c=c, A=A)
+
+# VQE with RYRZ ansatz
+reps = 1
+thetas_yz = rng.uniform(0, 2 * np.pi, size=(4 * (reps + 1)))
+ryrz_ansatz = RYRZAnsatz(reps=reps)
+
+result_yz = spsa.minimize(
+    parameterized_energy,
+    thetas_yz,
+    maxiter=maxiter,
+    save_steps=save_steps,
+    seed=seed,
+    H=H,
+    ansatz=ryrz_ansatz,
+)
+
+print(f"Lowest eigenvalue is {result_yz['fun']:.4f}.")
+</pre>
+</div>
+
+<pre class="example">
+Lowest eigenvalue is -0.9990.
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"># VQE with RX ansatz
+reps = 1
+thetas_x = rng.uniform(0, 2 * np.pi, size=reps)
+rx_ansatz = RXAnsatz(reps=reps)
+
+result_x = spsa.minimize(
+    parameterized_energy,
+    thetas_x,
+    maxiter=maxiter,
+    save_steps=save_steps,
+    seed=seed,
+    H=H,
+    ansatz=rx_ansatz,
+)
+
+print(f"Lowest eigenvalue is {result_x['fun']:.4f}.")
+</pre>
+</div>
+
+<pre class="example">
+Lowest eigenvalue is -1.0000.
+</pre>
+
+
+<p>
+Both the ansatzes effectively give \(-1\) as the minimum eigenvalue when running
+on the simulator without noise. Let us now add noise to the simulation. For this
+we will real noise data from the <code>ibmq_vigo</code> device using the data stored in
+Qiskit Terra.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">from qiskit import Aer
+from qiskit.test.mock import FakeVigo
+from qiskit.providers.aer.noise import NoiseModel
+
+# Vigo noise model
+device_backend = FakeVigo()
+coupling_map = device_backend.configuration().coupling_map
+noise_model = NoiseModel.from_backend(device_backend)
+basis_gates = noise_model.basis_gates
+
+# BasicAer does not support noise, we need the simulator from Aer
+backend = Aer.get_backend("qasm_simulator")
+
+# Noisy VQE with RYRZ ansatz
+result_yz_noisy = spsa.minimize(
+    parameterized_energy,
+    thetas_yz,
+    maxiter=maxiter,
+    save_steps=save_steps,
+    seed=seed,
+    H=H,
+    ansatz=ryrz_ansatz,
+    backend=backend,
+    noise_model=noise_model,
+    coupling_map=coupling_map,
+    basis_gates=basis_gates
+)
+
+print(f"Lowest eigenvalue is {result_yz_noisy['fun']:.4f}.")
+</pre>
+</div>
+
+<pre class="example">
+Lowest eigenvalue is -0.8760.
+</pre>
+
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python"># Noisy VQE with RX ansatz
+result_x_noisy = spsa.minimize(
+    parameterized_energy,
+    thetas_x,
+    maxiter=maxiter,
+    save_steps=save_steps,
+    seed=seed,
+    H=H,
+    ansatz=rx_ansatz,
+    backend=backend,
+    noise_model=noise_model,
+    coupling_map=coupling_map,
+    basis_gates=basis_gates
+)
+
+print(f"Lowest eigenvalue is {result_x_noisy['fun']:.4f}.")
+</pre>
+</div>
+
+<pre class="example">
+Lowest eigenvalue is -0.8584.
+</pre>
+
+
+<p>
+With noise added to the system we no longer get the exact lowest eigenvalue of
+the Hamiltonian. But we still come close to it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2d4f29b" class="outline-2">
+<h2 id="org2d4f29b">Visualization</h2>
+<div class="outline-text-2" id="text-org2d4f29b">
+<p>
+We can see the progress of the optimization, which might give us some insights
+into VQE.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-jupyter-python">iters = np.arange(0, maxiter + save_steps, save_steps)
+
+fig, ax = plt.subplots(figsize=(10, 8))
+ax.plot(iters, result_yz['log']['fevals'], color='darkorange', linestyle='solid', label='RYRZ (w/o noise)')
+ax.plot(iters, result_yz_noisy['log']['fevals'], color='darkorange', linestyle='dashed', label='RYRZ (w/ noise)')
+ax.plot(iters, result_x['log']['fevals'], color='dodgerblue', linestyle='solid', label='RX (w/o noise)')
+ax.plot(iters, result_x_noisy['log']['fevals'], color='dodgerblue', linestyle='dashed', label='RX (w/ noise)')
+ax.set_xlabel("Iterations")
+ax.set_ylabel("Energy")
+ax.legend()
+fig.savefig("img/rx_log.png", bbox_inches="tight", dpi=90)
+plt.close()
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="img/rx_log.png" alt="rx_log.png" />
+</p>
+</div>
+
+<p>
+Few observations that we can immediately make from this figure:
+</p>
+<ol class="org-ol">
+<li>VQE converges pretty fast for the RX ansatz, both with and without
+noise. About 200 SPSA iterations seem to be enough, instead of the 1000 that
+we used.</li>
+<li>Surprisingly noisy RYRZ converges faster, albeit to a wrong value, than the
+noiseless version. This could be due to the probabilistic nature of SPSA. In
+general the RYRZ ansatz takes more time than the RX ansatz to converge. This
+shows the impact of the choice of the ansatz.</li>
+<li>The effect of the noise is fairly constant, more so for the RX ansatz, than
+the RYRZ ansatz. The noise pretty much just shifts the converged results by a
+constant amount. If we know that what the effect of the noise is going to be
+then we might be able to correct for it.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgef49779" class="outline-2">
+<h2 id="orgef49779">Conclusion</h2>
+<div class="outline-text-2" id="text-orgef49779">
+<p>
+We demonstrated the VQE algorithm with a quantum simulator. We showed that it
+gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
+not give the correct answer, but it goes quite close. Maybe further error
+correction procedures can help with that.
+</p>
+
+<p>
+Further explorations would naturally involve trying out other ansatz, and other
+optimization methods. Automatic differentiation would greatly facilitate the use
+of gradient based optimization processes for VQE problems. Though SPSA did an
+excellent job with this toy problem, it would be worthwhile to check if gradient
+based results give superior performance. Towards that end one could investigate
+how to integrate existing automatic differentiation packages like JAX and
+Autograd with quantum computing packages like Qiskit. The most important
+exploration would be to try this on an actual quantum computer, with a more
+complicated Hamiltonian to demonstrate the quantum advantage that VQE provides.
+</p>
+
+<p>
+The code for this is in the <code>vqe</code> folder. Please check that for details
+regarding my implementation of the various parts of the VQE algorithm.
+</p>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+Peruzzo, A., McClean, J., Shadbolt, P. <i>et al.</i>, A variational eigenvalue
+solver on a photonic quantum processor. Nat Commun 5, 4213
+(2014). <a href="https://www.nature.com/articles/ncomms5213">https://doi.org/10.1038/ncomms5213</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
+Kandala, A., Mezzacapo, A., Temme, K. <i>et al.</i>, Hardware-efficient
+variational quantum eigensolver for small molecules and quantum magnets. Nature
+549, 242–246 (2017). <a href="https://doi.org/10.1038/nature23879">https://doi.org/10.1038/nature23879</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
+Dumitrescu, E. F. <i>et al.</i> Cloud Quantum Computing of an Atomic Nucleus.”
+Physical Review Letters 120.21 (2018). <a href="https://arxiv.org/abs/1801.03897">https://arxiv.org/abs/1801.03897</a>
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
+For more details on making measurements with tensor products of Pauli
+operators check out this excellent <a href="https://quantumcomputing.stackexchange.com/a/13675/12785">answer</a> by Davit Kachatryan and
+<a href="https://docs.microsoft.com/en-us/quantum/concepts/pauli-measurements">Pauli Measurements</a> by Microsoft Quantum.
+</p></div></div>
+
+
+</div>
+</div></div>
+</body>
+</html>
