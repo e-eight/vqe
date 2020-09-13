@@ -47,7 +47,7 @@ print(f"Eigenvalues: {np.linalg.eigvals(H)}")
 :  [ 0.  0.  0.  1.]]
 : Eigenvalues: [ 1. -1.  1.  1.]
 
-The minimum eigenvalue is -1. While the eigenvalues for this Hamiltonian could
+The minimum eigenvalue is \(-1\). While the eigenvalues for this Hamiltonian could
 be calculated easily on a classical computer, this is not generally true for
 Hamiltonians of interest in physics and chemistry. Hence the need for algorithms
 like VQE.
@@ -350,13 +350,13 @@ correction procedures can help with that.
 
 Further explorations would naturally involve trying out other ansatz, and other
 optimization methods. Automatic differentiation would greatly facilitate the use
-of gradient based optimization processes for VQE problems. Though SPSA did an
-excellent job with this toy problem, it would be worthwhile to check if gradient
-based results give superior performance. Towards that end one could investigate
-how to integrate existing automatic differentiation packages like JAX and
-Autograd with quantum computing packages like Qiskit. The most important
-exploration would be to try this on an actual quantum computer, with a more
-complicated Hamiltonian to demonstrate the quantum advantage that VQE provides.
+of gradient based optimizers for VQE problems. Though SPSA did an excellent job
+with this toy problem, it would be worthwhile to check if gradient based
+optimizers give superior performance. Towards that end one could investigate how
+to integrate existing automatic differentiation packages like JAX and Autograd
+with quantum computing packages like Qiskit. The most important exploration
+would be to try this on an actual quantum computer, with a more complicated
+Hamiltonian to demonstrate the quantum advantage that VQE provides.
 
 The code for this is in the =vqe= folder. Please check that for details
 regarding my implementation of the various parts of the VQE algorithm.
