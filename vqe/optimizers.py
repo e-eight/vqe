@@ -2,7 +2,7 @@ import numpy as np
 
 
 class SPSA:
-    """Simultaneous perturbation stochastic algorithm for numerical
+    """Simultaneous perturbation stochastic approximation for numerical
     optimization.
 
     For details of the algorithm check "Stochastic Recursive Algorithms for
