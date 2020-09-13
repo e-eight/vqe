@@ -372,6 +372,8 @@ would be to try this on an actual quantum computer, with a more complicated
 Hamiltonian to demonstrate the quantum advantage that VQE provides. In addition
 one can also explore how to correct for noise on NISQ devices.
 
+You can find the code for this at [[https://github.com/e-eight/vqe/]].
+
 * Footnotes
 
 [fn:1] Peruzzo, A., McClean, J., Shadbolt, P. /et al./, A variational eigenvalue
