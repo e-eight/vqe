@@ -4,7 +4,7 @@ This is my submission for the QOSF 2020 mentorship program. I have demonstrated
 the variational quantum eigensolver (VQE) algorithm, by using it to find the
 lowest eigenvalue of a toy Hamiltonian.
 
-A detailed demonstration is given in [[file:VQE_analysis.org][VQE_Analysis.org]]. Github does not properly
+A detailed demonstration is given in [[file:VQE_analysis.org][VQE_analysis.org]]. Github does not properly
 render Org files. You can either use an editor that supports Org, like Emacs, or
 you can view the HTML export provided by Github pages at [[https://e-eight.github.io/vqe/][Lowest eigenvalue with
 Variational Quantum Eigensolver]]. The second option might be the easiest. The
