@@ -56,20 +56,17 @@ like VQE.
 
 The VQE algorithm can be broken down in to the following steps:
 
-1. Design a quantum circuit, controlled by a set of parameters
-   \({θ_i}\), and prepare the initial state \(|ψ^0〉\) with this circuit. This
-   is known as the ansatz.
+1. Let \(n = 0\). Design a quantum circuit, controlled by a set of parameters
+   \({θ_i}\), and prepare the initial state \(|ψ(θ_i^n)〉\) with this
+   circuit. This is known as the ansatz.
 
-2. Define the objective function \(f({θ_i^n}) =
-   ⟨ψ({θ_i^n})|H|ψ({θ_i^n})⟩\), that is the expectation value of the
-   Hamiltonian with respect the ansatz.
+2. Define the objective function \(f({θ_i^n}) = ⟨ψ({θ_i^n})|H|ψ({θ_i^n})⟩\),
+   that is the expectation value of the Hamiltonian with respect the ansatz.
 
-3. Let \(n = 0\).
-
-4. Repeat until optimization is completed:
+3. Repeat until optimization is completed:
    a. Calculate \(f({θ_i^n})\) on the quantum computer.
-   b. Feed \(f({θ_i^n})\) to a classical minimization algorithm, and allow it
-      to determine \({θ_i^{n+1}}\).
+   b. Feed \(f({θ_i^n})\) to a classical minimization algorithm, and allow it to
+      determine \({θ_i^{n+1}}\).
 
 * Ansatz
 
@@ -348,14 +345,14 @@ Few observations that we can immediately make from this figure:
 1. VQE converges pretty fast for the RX ansatz, both with and without
    noise. About 200 SPSA iterations seem to be enough, instead of the 1000 that
    we used.
-2. Surprisingly noisy RYRZ converges faster, albeit to a wrong value, than the
-   noiseless version. This could be due to the probabilistic nature of SPSA. In
-   general the RYRZ ansatz takes more time than the RX ansatz to converge. This
-   shows the impact of the choice of the ansatz.
-3. The effect of the noise is fairly constant, more so for the RX ansatz, than
-   the RYRZ ansatz. The noise pretty much just shifts the converged results by a
-   constant amount. If we know that what the effect of the noise is going to be
-   then we might be able to correct for it.
+2. The RYRZ ansatz takes longer to converge. Even though in this figure we see
+   that the noisy version converges earlier, albeit to a wrong value, than the
+   noiseless version. That is not always true. A different run is equally likely
+   to show the opposite. This is possibly due to the probabilistic nature of
+   SPSA. This also indicates the importance of the choice of the ansatz.
+3. The noise is affecting the converged answers for both the ansatzes in the
+   same way. If we know what the noise is, we can possibly correct for it once
+   we reach convergence.
 
 * Conclusion
 
@@ -372,10 +369,8 @@ optimizers give superior performance. Towards that end one could investigate how
 to integrate existing automatic differentiation packages like JAX and Autograd
 with quantum computing packages like Qiskit. The most important exploration
 would be to try this on an actual quantum computer, with a more complicated
-Hamiltonian to demonstrate the quantum advantage that VQE provides.
-
-The code for this is in the =vqe= folder. Please check that for details
-regarding my implementation of the various parts of the VQE algorithm.
+Hamiltonian to demonstrate the quantum advantage that VQE provides. In addition
+one can also explore how to correct for noise on NISQ devices.
 
 * Footnotes
 

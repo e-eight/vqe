@@ -145,28 +145,28 @@ ax.plot(
     result_yz["log"]["fevals"],
     color="darkorange",
     linestyle="solid",
-    label="RYRZ (w/o noise)",
+    label="RYRZ (noiseless)",
 )
 ax.plot(
     iters,
     result_yz_noisy["log"]["fevals"],
     color="darkorange",
     linestyle="dashed",
-    label="RYRZ (w/ noise)",
+    label="RYRZ (noisy)",
 )
 ax.plot(
     iters,
     result_x["log"]["fevals"],
     color="dodgerblue",
     linestyle="solid",
-    label="RX (w/o noise)",
+    label="RX (noiseless)",
 )
 ax.plot(
     iters,
     result_x_noisy["log"]["fevals"],
     color="dodgerblue",
     linestyle="dashed",
-    label="RX (w/ noise)",
+    label="RX (noisy)",
 )
 ax.set_xlabel("Iterations")
 ax.set_ylabel("Energy")
