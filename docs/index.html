@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-12 Sat 22:09 -->
+<!-- 2020-09-12 Sat 22:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
@@ -224,21 +224,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1a14fbf">Introduction</a></li>
-<li><a href="#org3485a02">Algorithm</a></li>
-<li><a href="#org2521433">Ansatz</a></li>
-<li><a href="#orgeb579d3">Pauli Decomposition</a></li>
-<li><a href="#org3d1a9a8">Optimization</a></li>
-<li><a href="#org3ec39ef">Simulation</a></li>
-<li><a href="#orgd7ab086">Visualization</a></li>
-<li><a href="#orgf92197c">Conclusion</a></li>
+<li><a href="#orgb17f30f">Introduction</a></li>
+<li><a href="#org18d4fcc">Algorithm</a></li>
+<li><a href="#org22b6066">Ansatz</a></li>
+<li><a href="#org215660d">Pauli Decomposition</a></li>
+<li><a href="#org99613ee">Optimization</a></li>
+<li><a href="#orgc826c87">Simulation</a></li>
+<li><a href="#orgeccf549">Visualization</a></li>
+<li><a href="#org86b0c69">Conclusion</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org1a14fbf" class="outline-2">
-<h2 id="org1a14fbf">Introduction</h2>
-<div class="outline-text-2" id="text-org1a14fbf">
+<div id="outline-container-orgb17f30f" class="outline-2">
+<h2 id="orgb17f30f">Introduction</h2>
+<div class="outline-text-2" id="text-orgb17f30f">
 <p>
 Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
 algorithm that can be used on NISQ devices to find the ground states of various
@@ -291,9 +291,9 @@ like VQE.
 </div>
 </div>
 
-<div id="outline-container-org3485a02" class="outline-2">
-<h2 id="org3485a02">Algorithm</h2>
-<div class="outline-text-2" id="text-org3485a02">
+<div id="outline-container-org18d4fcc" class="outline-2">
+<h2 id="org18d4fcc">Algorithm</h2>
+<div class="outline-text-2" id="text-org18d4fcc">
 <p>
 The VQE algorithm can be broken down in to the following steps:
 </p>
@@ -319,9 +319,9 @@ to determine \({θ_i^{n+1}}\).</li>
 </div>
 </div>
 
-<div id="outline-container-org2521433" class="outline-2">
-<h2 id="org2521433">Ansatz</h2>
-<div class="outline-text-2" id="text-org2521433">
+<div id="outline-container-org22b6066" class="outline-2">
+<h2 id="org22b6066">Ansatz</h2>
+<div class="outline-text-2" id="text-org22b6066">
 <p>
 There are two things that the user can choose in this algorithm: the initial
 state, and the classical minimization algorithm. Of this, it turns out, the
@@ -378,9 +378,9 @@ versions the blocks just appear once.
 </div>
 </div>
 
-<div id="outline-container-orgeb579d3" class="outline-2">
-<h2 id="orgeb579d3">Pauli Decomposition</h2>
-<div class="outline-text-2" id="text-orgeb579d3">
+<div id="outline-container-org215660d" class="outline-2">
+<h2 id="org215660d">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-org215660d">
 <p>
 One caveat of using VQE is that in general it is not easy to calculate the
 expectation value of the Hamiltonian. However if the Hamiltonian can be
@@ -441,24 +441,24 @@ respect to any given ansatz.
 </div>
 </div>
 
-<div id="outline-container-org3d1a9a8" class="outline-2">
-<h2 id="org3d1a9a8">Optimization</h2>
-<div class="outline-text-2" id="text-org3d1a9a8">
+<div id="outline-container-org99613ee" class="outline-2">
+<h2 id="org99613ee">Optimization</h2>
+<div class="outline-text-2" id="text-org99613ee">
 <p>
 Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
 preferred methods for these problems since it will be difficult to calculate the
 derivative of the objective function. For problems like VQE, SPSA or
-Simultaneous Perturbation Stochastic Algorithm might be the most suitable, since
+Simultaneous Perturbation Stochastic Algorithm<sup><a id="fnr.5" class="footref" href="#fn.5">5</a></sup> might be the most suitable, since
 it scales well to large problems (unlike COBYLA), and accounts for noise which
 is ubiquitous on a NISQ device. SPSA is implemented in <code>vqe/optimizers.py</code>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3ec39ef" class="outline-2">
-<h2 id="org3ec39ef">Simulation</h2>
-<div class="outline-text-2" id="text-org3ec39ef">
+<div id="outline-container-orgc826c87" class="outline-2">
+<h2 id="orgc826c87">Simulation</h2>
+<div class="outline-text-2" id="text-orgc826c87">
 <p>
 We will do these simulations with the <code>qasm_simulator</code> backend provided by
 Qiskit, initially without noise. First we will demonstrate VQE with the single
@@ -613,9 +613,9 @@ the Hamiltonian. But we still come close to it.
 </div>
 </div>
 
-<div id="outline-container-orgd7ab086" class="outline-2">
-<h2 id="orgd7ab086">Visualization</h2>
-<div class="outline-text-2" id="text-orgd7ab086">
+<div id="outline-container-orgeccf549" class="outline-2">
+<h2 id="orgeccf549">Visualization</h2>
+<div class="outline-text-2" id="text-orgeccf549">
 <p>
 We can see the progress of the optimization, which might give us some insights
 into VQE.
@@ -662,9 +662,9 @@ then we might be able to correct for it.</li>
 </div>
 </div>
 
-<div id="outline-container-orgf92197c" class="outline-2">
-<h2 id="orgf92197c">Conclusion</h2>
-<div class="outline-text-2" id="text-orgf92197c">
+<div id="outline-container-org86b0c69" class="outline-2">
+<h2 id="org86b0c69">Conclusion</h2>
+<div class="outline-text-2" id="text-org86b0c69">
 <p>
 We demonstrated the VQE algorithm with a quantum simulator. We showed that it
 gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
@@ -715,6 +715,11 @@ Physical Review Letters 120.21 (2018). <a href="https://arxiv.org/abs/1801.03897
 For more details on making measurements with tensor products of Pauli
 operators check out this excellent <a href="https://quantumcomputing.stackexchange.com/a/13675/12785">answer</a> by Davit Kachatryan and
 <a href="https://docs.microsoft.com/en-us/quantum/concepts/pauli-measurements">Pauli Measurements</a> by Microsoft Quantum.
+</p></div></div>
+
+<div class="footdef"><sup><a id="fn.5" class="footnum" href="#fnr.5">5</a></sup> <div class="footpara"><p class="footpara">
+Check <a href="https://www.jhuapl.edu/SPSA/">https://www.jhuapl.edu/SPSA/</a> and
+<a href="https://www.csa.iisc.ac.in/~shalabh/book.html">https://www.csa.iisc.ac.in/~shalabh/book.html</a> for details on SPSA.
 </p></div></div>
 
 

@@ -166,7 +166,7 @@ Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
 preferred methods for these problems since it will be difficult to calculate the
 derivative of the objective function. For problems like VQE, SPSA or
-Simultaneous Perturbation Stochastic Algorithm might be the most suitable, since
+Simultaneous Perturbation Stochastic Algorithm[fn:5] might be the most suitable, since
 it scales well to large problems (unlike COBYLA), and accounts for noise which
 is ubiquitous on a NISQ device. SPSA is implemented in =vqe/optimizers.py=.
 
@@ -315,10 +315,10 @@ into VQE.
 iters = np.arange(0, maxiter + save_steps, save_steps)
 
 fig, ax = plt.subplots(figsize=(10, 8))
-ax.plot(iters, result_yz['log']['fevals'], color='darkorange', linestyle='solid', label='RYRZ (w/o noise)')
-ax.plot(iters, result_yz_noisy['log']['fevals'], color='darkorange', linestyle='dashed', label='RYRZ (w/ noise)')
-ax.plot(iters, result_x['log']['fevals'], color='dodgerblue', linestyle='solid', label='RX (w/o noise)')
-ax.plot(iters, result_x_noisy['log']['fevals'], color='dodgerblue', linestyle='dashed', label='RX (w/ noise)')
+ax.plot(iters, result_yz["log"]["fevals"], color="darkorange", linestyle="solid", label="RYRZ (noiseless)")
+ax.plot(iters, result_yz_noisy["log"]["fevals"], color="darkorange", linestyle="dashed", label="RYRZ (noisy)")
+ax.plot(iters, result_x["log"]["fevals"], color="dodgerblue", linestyle="solid", label="RX (noiseless)")
+ax.plot(iters, result_x_noisy["log"]["fevals"], color="dodgerblue", linestyle="dashed", label="RX (noisy)")
 ax.set_xlabel("Iterations")
 ax.set_ylabel("Energy")
 ax.legend()
@@ -377,3 +377,6 @@ Physical Review Letters 120.21 (2018). [[https://arxiv.org/abs/1801.03897][https
 [fn:4] For more details on making measurements with tensor products of Pauli
 operators check out this excellent [[https://quantumcomputing.stackexchange.com/a/13675/12785][answer]] by Davit Kachatryan and
 [[https://docs.microsoft.com/en-us/quantum/concepts/pauli-measurements][Pauli Measurements]] by Microsoft Quantum.
+
+[fn:5] Check [[https://www.jhuapl.edu/SPSA/]] and
+[[https://www.csa.iisc.ac.in/~shalabh/book.html]] for details on SPSA.
