@@ -172,10 +172,10 @@ follows:
 1. Start with an initial guess for the optimization parameters \(θ = \{θ_i\}\).
 
 2. For \(N\) iterations update the parameters as: \(θ_i(n + 1) = θ_i(n) - a(n)
-   g(n)\), where \(g(n)\) is an approximation of the gradient of the objective
-   function \(f(θ)\) given by
+   g_i(n)\), where \(g_i(n)\) is an approximation of the gradient of the
+   objective function \(f(θ)\), with respect to \(θ_i\), given by
    \begin{align}
-   g(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
+   g_i(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
    \end{align}
    Here \(Δ(n) = \{Δ_i(n)\}\) is a vector of random numbers sampled from a
    Bernoulli (\(±1\)) distribution, with probability \(p\), and \(a(n)\), and
@@ -402,7 +402,7 @@ c \\
 d
 \end{bmatrix}.
 \end{align}
-This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as a Hilbert-Schmidt
+This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as the Hilbert-Schmidt
 inner product which turns the vector space of those matrices in to a Hilbert
 space. Some details can be found in chapter 2 of [[https://dl.acm.org/doi/book/10.5555/1972505][Nielsen & Chuang]].
 

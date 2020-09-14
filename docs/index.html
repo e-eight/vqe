@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-13 Sun 15:19 -->
+<!-- 2020-09-13 Sun 21:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
@@ -224,21 +224,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbebcfa3">Introduction</a></li>
-<li><a href="#org4383bfc">Algorithm</a></li>
-<li><a href="#orgfa06687">Ansatz</a></li>
-<li><a href="#org43626a3">Pauli Decomposition</a></li>
-<li><a href="#org74ff5b3">Optimization</a></li>
-<li><a href="#org515702f">Simulation</a></li>
-<li><a href="#org154090a">Visualization</a></li>
-<li><a href="#orgd32da40">Conclusion</a></li>
+<li><a href="#org1792d56">Introduction</a></li>
+<li><a href="#orgca27707">Algorithm</a></li>
+<li><a href="#org8a3ae42">Ansatz</a></li>
+<li><a href="#org18e0643">Pauli Decomposition</a></li>
+<li><a href="#orgea21d00">Optimization</a></li>
+<li><a href="#org90d463a">Simulation</a></li>
+<li><a href="#orgaa5dce7">Visualization</a></li>
+<li><a href="#org1f9ef2a">Conclusion</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgbebcfa3" class="outline-2">
-<h2 id="orgbebcfa3">Introduction</h2>
-<div class="outline-text-2" id="text-orgbebcfa3">
+<div id="outline-container-org1792d56" class="outline-2">
+<h2 id="org1792d56">Introduction</h2>
+<div class="outline-text-2" id="text-org1792d56">
 <p>
 Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
 algorithm that can be used on NISQ devices to find the ground states of various
@@ -291,9 +291,9 @@ like VQE.
 </div>
 </div>
 
-<div id="outline-container-org4383bfc" class="outline-2">
-<h2 id="org4383bfc">Algorithm</h2>
-<div class="outline-text-2" id="text-org4383bfc">
+<div id="outline-container-orgca27707" class="outline-2">
+<h2 id="orgca27707">Algorithm</h2>
+<div class="outline-text-2" id="text-orgca27707">
 <p>
 The VQE algorithm can be broken down in to the following steps:
 </p>
@@ -316,9 +316,9 @@ determine \({θ_i^{n+1}}\).</li>
 </div>
 </div>
 
-<div id="outline-container-orgfa06687" class="outline-2">
-<h2 id="orgfa06687">Ansatz</h2>
-<div class="outline-text-2" id="text-orgfa06687">
+<div id="outline-container-org8a3ae42" class="outline-2">
+<h2 id="org8a3ae42">Ansatz</h2>
+<div class="outline-text-2" id="text-org8a3ae42">
 <p>
 There are two things that the user can choose in this algorithm: the initial
 state, and the classical minimization algorithm. Of this, it turns out, the
@@ -375,9 +375,9 @@ versions the blocks just appear once.
 </div>
 </div>
 
-<div id="outline-container-org43626a3" class="outline-2">
-<h2 id="org43626a3">Pauli Decomposition</h2>
-<div class="outline-text-2" id="text-org43626a3">
+<div id="outline-container-org18e0643" class="outline-2">
+<h2 id="org18e0643">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-org18e0643">
 <p>
 One caveat of using VQE is that in general it is not easy to calculate the
 expectation value of the Hamiltonian. However if the Hamiltonian can be
@@ -439,9 +439,9 @@ respect to any given ansatz.
 </div>
 </div>
 
-<div id="outline-container-org74ff5b3" class="outline-2">
-<h2 id="org74ff5b3">Optimization</h2>
-<div class="outline-text-2" id="text-org74ff5b3">
+<div id="outline-container-orgea21d00" class="outline-2">
+<h2 id="orgea21d00">Optimization</h2>
+<div class="outline-text-2" id="text-orgea21d00">
 <p>
 Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
@@ -458,11 +458,11 @@ follows:
 
 <li><p>
 For \(N\) iterations update the parameters as: \(θ_i(n + 1) = θ_i(n) - a(n)
-   g(n)\), where \(g(n)\) is an approximation of the gradient of the objective
-function \(f(θ)\) given by
+   g_i(n)\), where \(g_i(n)\) is an approximation of the gradient of the
+objective function \(f(θ)\), with respect to \(θ_i\), given by
 </p>
 \begin{align}
-g(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
+g_i(n) = \frac{f(θ + c(n)Δ(n)) - f(θ - c(n)Δ(n))}{2 c(n)Δ_i(n)}.
 \end{align}
 <p>
 Here \(Δ(n) = \{Δ_i(n)\}\) is a vector of random numbers sampled from a
@@ -477,9 +477,9 @@ SPSA is implemented in <code>vqe/optimizers.py</code>.
 </div>
 </div>
 
-<div id="outline-container-org515702f" class="outline-2">
-<h2 id="org515702f">Simulation</h2>
-<div class="outline-text-2" id="text-org515702f">
+<div id="outline-container-org90d463a" class="outline-2">
+<h2 id="org90d463a">Simulation</h2>
+<div class="outline-text-2" id="text-org90d463a">
 <p>
 We will do these simulations with the <code>qasm_simulator</code> backend provided by
 Qiskit, initially without noise. First we will demonstrate VQE with the single
@@ -634,9 +634,9 @@ the Hamiltonian. But we still come close to it.
 </div>
 </div>
 
-<div id="outline-container-org154090a" class="outline-2">
-<h2 id="org154090a">Visualization</h2>
-<div class="outline-text-2" id="text-org154090a">
+<div id="outline-container-orgaa5dce7" class="outline-2">
+<h2 id="orgaa5dce7">Visualization</h2>
+<div class="outline-text-2" id="text-orgaa5dce7">
 <p>
 We can see the progress of the optimization, which might give us some insights
 into VQE.
@@ -683,9 +683,9 @@ we reach convergence.</li>
 </div>
 </div>
 
-<div id="outline-container-orgd32da40" class="outline-2">
-<h2 id="orgd32da40">Conclusion</h2>
-<div class="outline-text-2" id="text-orgd32da40">
+<div id="outline-container-org1f9ef2a" class="outline-2">
+<h2 id="org1f9ef2a">Conclusion</h2>
+<div class="outline-text-2" id="text-org1f9ef2a">
 <p>
 We demonstrated the VQE algorithm with a quantum simulator. We showed that it
 gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
@@ -750,7 +750,7 @@ d
 \end{bmatrix}.
 \end{align}
 <p class="footpara">
-This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as a Hilbert-Schmidt
+This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as the Hilbert-Schmidt
 inner product which turns the vector space of those matrices in to a Hilbert
 space. Some details can be found in chapter 2 of <a href="https://dl.acm.org/doi/book/10.5555/1972505">Nielsen &amp; Chuang</a>.
 </p></div></div>
