@@ -2,7 +2,7 @@
 #+AUTHOR: Soham Pal
 #+OPTIONS: html-postamble:nil html-scripts:nil html-doctype:html5 num:nil
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://gongzhitaao.org/orgcss/org.css"/>
-#+PROPERTY: header-args :tangle main.py :jupyter-python :session py :kernel .qiskit-venv :async yes :exports both
+#+PROPERTY: header-args :tangle main.py :jupyter-python :session py :kernel .qiskit-venv :async yes :exports both :eval never-export
 
 #+begin_src jupyter-python :results silent :exports none
 %load_ext autoreload
@@ -87,11 +87,11 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots(figsize=(6, 4))
 RYRZAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
 fig.suptitle("RYRZ ansatz with 3 repetitions")
-fig.savefig("img/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
+fig.savefig("static/images/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
 plt.close()
 #+end_src
 
-[[file:img/ryrz_ansatz.png]]
+[[file:static/images/ryrz_ansatz.png]]
 
 The second ansatz is parameterized by RX gates.
 
@@ -99,11 +99,11 @@ The second ansatz is parameterized by RX gates.
 fig, ax = plt.subplots(figsize=(6, 4))
 RXAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
 fig.suptitle("RX ansatz with 3 repetitions")
-fig.savefig("img/rx_ansatz.png", dpi=90, bbox_inches="tight")
+fig.savefig("static/images/rx_ansatz.png", dpi=90, bbox_inches="tight")
 plt.close()
 #+end_src
 
-[[file:img/rx_ansatz.png]]
+[[file:static/images/rx_ansatz.png]]
 
 These were the multi-layer versions of the ansatzes. In the single-layer
 versions the blocks just appear once.
@@ -335,11 +335,11 @@ ax.plot(iters, result_x_noisy["log"]["fevals"], color="dodgerblue", linestyle="d
 ax.set_xlabel("Iterations")
 ax.set_ylabel("Energy")
 ax.legend()
-fig.savefig("img/rx_log.png", bbox_inches="tight", dpi=90)
+fig.savefig("static/images/rx_log.png", bbox_inches="tight", dpi=90)
 plt.close()
 #+end_src
 
-[[file:img/rx_log.png]]
+[[file:static/images/rx_log.png]]
 
 Few observations that we can immediately make from this figure:
 1. VQE converges pretty fast for the RX ansatz, both with and without

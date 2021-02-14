@@ -1,15 +1,8 @@
-import matplotlib.pyplot as plt
+%load_ext autoreload
+%autoreload 2
+
 import numpy as np
-from qiskit import Aer
-from qiskit.providers.aer.noise import NoiseModel
-from qiskit.test.mock import FakeVigo
 
-from vqe.optimizers import SPSA
-from vqe.utils import pauli_decomposition
-from vqe.vqe import RXAnsatz, RYRZAnsatz, energy
-
-
-# Hamiltonian
 H = np.zeros(shape=(4, 4))
 H[0, 0] = H[3, 3] = 1
 H[1, 2] = H[2, 1] = -1
@@ -19,22 +12,28 @@ print(H)
 
 print(f"Eigenvalues: {np.linalg.eigvals(H)}")
 
-# RYRZ ansatz
+from vqe.vqe import RYRZAnsatz, RXAnsatz
+import matplotlib.pyplot as plt
+
 fig, ax = plt.subplots(figsize=(6, 4))
 RYRZAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
 fig.suptitle("RYRZ ansatz with 3 repetitions")
-fig.savefig("img/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
+fig.savefig("static/images/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
 plt.close()
 
-# RX ansatz
 fig, ax = plt.subplots(figsize=(6, 4))
 RXAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
 fig.suptitle("RX ansatz with 3 repetitions")
-fig.savefig("img/rx_ansatz.png", dpi=90, bbox_inches="tight")
+fig.savefig("static/images/rx_ansatz.png", dpi=90, bbox_inches="tight")
 plt.close()
 
-# Pauli decomposition
-print(f"Pauli decomposition of H: {pauli_decomposition(H)}")
+from vqe.utils import pauli_decomposition
+
+pauli_decomposition(H)
+
+from vqe.vqe import energy
+from vqe.optimizers import SPSA
+
 
 # The expectation value of the Hamiltonian
 def parameterized_energy(params, H, ansatz, **kwargs):
@@ -53,9 +52,6 @@ c = 0.1
 A = 0.0001
 spsa = SPSA(a=a, c=c, A=A)
 
-print("\n")
-print("Noiseless VQE")
-
 # VQE with RYRZ ansatz
 reps = 1
 thetas_yz = rng.uniform(0, 2 * np.pi, size=(4 * (reps + 1)))
@@ -71,7 +67,7 @@ result_yz = spsa.minimize(
     ansatz=ryrz_ansatz,
 )
 
-print(f"Lowest eigenvalue with RYRZ ansatz is {result_yz['fun']:.4f}.")
+print(f"Lowest eigenvalue is {result_yz['fun']:.4f}.")
 
 # VQE with RX ansatz
 reps = 1
@@ -88,10 +84,11 @@ result_x = spsa.minimize(
     ansatz=rx_ansatz,
 )
 
-print(f"Lowest eigenvalue with RX ansatz is {result_x['fun']:.4f}.")
+print(f"Lowest eigenvalue is {result_x['fun']:.4f}.")
 
-print("\n")
-print("Noisy VQE")
+from qiskit import Aer
+from qiskit.test.mock import FakeVigo
+from qiskit.providers.aer.noise import NoiseModel
 
 # Vigo noise model
 device_backend = FakeVigo()
@@ -114,10 +111,10 @@ result_yz_noisy = spsa.minimize(
     backend=backend,
     noise_model=noise_model,
     coupling_map=coupling_map,
-    basis_gates=basis_gates,
+    basis_gates=basis_gates
 )
 
-print(f"Lowest eigenvalue with RYRZ ansatz is {result_yz_noisy['fun']:.4f}.")
+print(f"Lowest eigenvalue is {result_yz_noisy['fun']:.4f}.")
 
 # Noisy VQE with RX ansatz
 result_x_noisy = spsa.minimize(
@@ -131,45 +128,20 @@ result_x_noisy = spsa.minimize(
     backend=backend,
     noise_model=noise_model,
     coupling_map=coupling_map,
-    basis_gates=basis_gates,
+    basis_gates=basis_gates
 )
 
-print(f"Lowest eigenvalue with RX ansatz is {result_x_noisy['fun']:.4f}.")
+print(f"Lowest eigenvalue is {result_x_noisy['fun']:.4f}.")
 
-# Visualization
 iters = np.arange(0, maxiter + save_steps, save_steps)
 
 fig, ax = plt.subplots(figsize=(10, 8))
-ax.plot(
-    iters,
-    result_yz["log"]["fevals"],
-    color="darkorange",
-    linestyle="solid",
-    label="RYRZ (noiseless)",
-)
-ax.plot(
-    iters,
-    result_yz_noisy["log"]["fevals"],
-    color="darkorange",
-    linestyle="dashed",
-    label="RYRZ (noisy)",
-)
-ax.plot(
-    iters,
-    result_x["log"]["fevals"],
-    color="dodgerblue",
-    linestyle="solid",
-    label="RX (noiseless)",
-)
-ax.plot(
-    iters,
-    result_x_noisy["log"]["fevals"],
-    color="dodgerblue",
-    linestyle="dashed",
-    label="RX (noisy)",
-)
+ax.plot(iters, result_yz["log"]["fevals"], color="darkorange", linestyle="solid", label="RYRZ (noiseless)")
+ax.plot(iters, result_yz_noisy["log"]["fevals"], color="darkorange", linestyle="dashed", label="RYRZ (noisy)")
+ax.plot(iters, result_x["log"]["fevals"], color="dodgerblue", linestyle="solid", label="RX (noiseless)")
+ax.plot(iters, result_x_noisy["log"]["fevals"], color="dodgerblue", linestyle="dashed", label="RX (noisy)")
 ax.set_xlabel("Iterations")
 ax.set_ylabel("Energy")
 ax.legend()
-fig.savefig("img/rx_log.png", bbox_inches="tight", dpi=90)
+fig.savefig("static/images/rx_log.png", bbox_inches="tight", dpi=90)
 plt.close()

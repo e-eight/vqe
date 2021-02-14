@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-09-13 Sun 21:28 -->
+<!-- 2021-02-14 Sun 00:59 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lowest eigenvalue with Variational Quantum Eigensolver</title>
@@ -40,7 +40,7 @@
   }
   pre.src {
     position: relative;
-    overflow: visible;
+    overflow: auto;
     padding-top: 1.2em;
   }
   pre.src:before {
@@ -52,7 +52,7 @@
     padding: 3px;
     border: 1px solid black;
   }
-  pre.src:hover:before { display: inline;}
+  pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
@@ -224,21 +224,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org1792d56">Introduction</a></li>
-<li><a href="#orgca27707">Algorithm</a></li>
-<li><a href="#org8a3ae42">Ansatz</a></li>
-<li><a href="#org18e0643">Pauli Decomposition</a></li>
-<li><a href="#orgea21d00">Optimization</a></li>
-<li><a href="#org90d463a">Simulation</a></li>
-<li><a href="#orgaa5dce7">Visualization</a></li>
-<li><a href="#org1f9ef2a">Conclusion</a></li>
+<li><a href="#org04ac827">Introduction</a></li>
+<li><a href="#org8455bd0">Algorithm</a></li>
+<li><a href="#org771a52a">Ansatz</a></li>
+<li><a href="#org70a8d80">Pauli Decomposition</a></li>
+<li><a href="#orgda403f4">Optimization</a></li>
+<li><a href="#org2f3130d">Simulation</a></li>
+<li><a href="#org6f8ada5">Visualization</a></li>
+<li><a href="#org41708be">Conclusion</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org1792d56" class="outline-2">
-<h2 id="org1792d56">Introduction</h2>
-<div class="outline-text-2" id="text-org1792d56">
+<div id="outline-container-org04ac827" class="outline-2">
+<h2 id="org04ac827">Introduction</h2>
+<div class="outline-text-2" id="text-org04ac827">
 <p>
 Variational quantum eigensolver (VQE)<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup> is a hybrid quantum-classical
 algorithm that can be used on NISQ devices to find the ground states of various
@@ -259,16 +259,16 @@ whose eigenvalues can be calculated easily on a classical computer:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">import numpy as np
+<pre class="src src-jupyter-python"><span style="color: #51afef;">import</span> numpy <span style="color: #51afef;">as</span> np
 
-H = np.zeros(shape=(4, 4))
-H[0, 0] = H[3, 3] = 1
-H[1, 2] = H[2, 1] = -1
+<span style="color: #dcaeea;">H</span> = np.zeros(shape=(<span style="color: #da8548; font-weight: bold;">4</span>, <span style="color: #da8548; font-weight: bold;">4</span>))
+<span style="color: #dcaeea;">H</span>[<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">0</span>] = <span style="color: #dcaeea;">H</span>[<span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">3</span>] = <span style="color: #da8548; font-weight: bold;">1</span>
+<span style="color: #dcaeea;">H</span>[<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>] = <span style="color: #dcaeea;">H</span>[<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">1</span>] = -<span style="color: #da8548; font-weight: bold;">1</span>
 
-print("Hamiltonian:")
-print(H)
+<span style="color: #51afef;">print</span>(<span style="color: #98be65;">"Hamiltonian:"</span>)
+<span style="color: #51afef;">print</span>(H)
 
-print(f"Eigenvalues: {np.linalg.eigvals(H)}")
+<span style="color: #51afef;">print</span>(f<span style="color: #98be65;">"Eigenvalues: {np.linalg.eigvals(H)}"</span>)
 </pre>
 </div>
 
@@ -291,9 +291,9 @@ like VQE.
 </div>
 </div>
 
-<div id="outline-container-orgca27707" class="outline-2">
-<h2 id="orgca27707">Algorithm</h2>
-<div class="outline-text-2" id="text-orgca27707">
+<div id="outline-container-org8455bd0" class="outline-2">
+<h2 id="org8455bd0">Algorithm</h2>
+<div class="outline-text-2" id="text-org8455bd0">
 <p>
 The VQE algorithm can be broken down in to the following steps:
 </p>
@@ -316,9 +316,9 @@ determine \({θ_i^{n+1}}\).</li>
 </div>
 </div>
 
-<div id="outline-container-org8a3ae42" class="outline-2">
-<h2 id="org8a3ae42">Ansatz</h2>
-<div class="outline-text-2" id="text-org8a3ae42">
+<div id="outline-container-org771a52a" class="outline-2">
+<h2 id="org771a52a">Ansatz</h2>
+<div class="outline-text-2" id="text-org771a52a">
 <p>
 There are two things that the user can choose in this algorithm: the initial
 state, and the classical minimization algorithm. Of this, it turns out, the
@@ -332,20 +332,20 @@ paper by Kandala <i>et al.</i>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">from vqe.vqe import RYRZAnsatz, RXAnsatz
-import matplotlib.pyplot as plt
+<pre class="src src-jupyter-python"><span style="color: #51afef;">from</span> vqe.vqe <span style="color: #51afef;">import</span> RYRZAnsatz, RXAnsatz
+<span style="color: #51afef;">import</span> matplotlib.pyplot <span style="color: #51afef;">as</span> plt
 
-fig, ax = plt.subplots(figsize=(6, 4))
-RYRZAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
-fig.suptitle("RYRZ ansatz with 3 repetitions")
-fig.savefig("img/ryrz_ansatz.png", dpi=90, bbox_inches="tight")
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> = plt.subplots(figsize=(<span style="color: #da8548; font-weight: bold;">6</span>, <span style="color: #da8548; font-weight: bold;">4</span>))
+RYRZAnsatz(reps=<span style="color: #da8548; font-weight: bold;">3</span>, barriers=<span style="color: #a9a1e1;">True</span>).draw(<span style="color: #98be65;">"mpl"</span>, ax=ax)
+fig.suptitle(<span style="color: #98be65;">"RYRZ ansatz with 3 repetitions"</span>)
+fig.savefig(<span style="color: #98be65;">"static/images/ryrz_ansatz.png"</span>, dpi=<span style="color: #da8548; font-weight: bold;">90</span>, bbox_inches=<span style="color: #98be65;">"tight"</span>)
 plt.close()
 </pre>
 </div>
 
 
-<div class="figure">
-<p><img src="img/ryrz_ansatz.png" alt="ryrz_ansatz.png" />
+<div id="org8b5f137" class="figure">
+<p><img src="static/images/ryrz_ansatz.png" alt="ryrz_ansatz.png" />
 </p>
 </div>
 
@@ -354,17 +354,17 @@ The second ansatz is parameterized by RX gates.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">fig, ax = plt.subplots(figsize=(6, 4))
-RXAnsatz(reps=3, barriers=True).draw("mpl", ax=ax)
-fig.suptitle("RX ansatz with 3 repetitions")
-fig.savefig("img/rx_ansatz.png", dpi=90, bbox_inches="tight")
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> = plt.subplots(figsize=(<span style="color: #da8548; font-weight: bold;">6</span>, <span style="color: #da8548; font-weight: bold;">4</span>))
+RXAnsatz(reps=<span style="color: #da8548; font-weight: bold;">3</span>, barriers=<span style="color: #a9a1e1;">True</span>).draw(<span style="color: #98be65;">"mpl"</span>, ax=ax)
+fig.suptitle(<span style="color: #98be65;">"RX ansatz with 3 repetitions"</span>)
+fig.savefig(<span style="color: #98be65;">"static/images/rx_ansatz.png"</span>, dpi=<span style="color: #da8548; font-weight: bold;">90</span>, bbox_inches=<span style="color: #98be65;">"tight"</span>)
 plt.close()
 </pre>
 </div>
 
 
-<div class="figure">
-<p><img src="img/rx_ansatz.png" alt="rx_ansatz.png" />
+<div id="org0b63cdf" class="figure">
+<p><img src="static/images/rx_ansatz.png" alt="rx_ansatz.png" />
 </p>
 </div>
 
@@ -375,9 +375,9 @@ versions the blocks just appear once.
 </div>
 </div>
 
-<div id="outline-container-org18e0643" class="outline-2">
-<h2 id="org18e0643">Pauli Decomposition</h2>
-<div class="outline-text-2" id="text-org18e0643">
+<div id="outline-container-org70a8d80" class="outline-2">
+<h2 id="org70a8d80">Pauli Decomposition</h2>
+<div class="outline-text-2" id="text-org70a8d80">
 <p>
 One caveat of using VQE is that in general it is not easy to calculate the
 expectation value of the Hamiltonian. However if the Hamiltonian can be
@@ -410,7 +410,7 @@ matrix. Here is the decomposition of our Hamiltonian \(H\):
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">from vqe.utils import pauli_decomposition
+<pre class="src src-jupyter-python"><span style="color: #51afef;">from</span> vqe.utils <span style="color: #51afef;">import</span> pauli_decomposition
 
 pauli_decomposition(H)
 </pre>
@@ -439,9 +439,9 @@ respect to any given ansatz.
 </div>
 </div>
 
-<div id="outline-container-orgea21d00" class="outline-2">
-<h2 id="orgea21d00">Optimization</h2>
-<div class="outline-text-2" id="text-orgea21d00">
+<div id="outline-container-orgda403f4" class="outline-2">
+<h2 id="orgda403f4">Optimization</h2>
+<div class="outline-text-2" id="text-orgda403f4">
 <p>
 Any classical optimization algorithm can be used in VQE, with varying degrees of
 success. Gradient-free methods like COBYLA, Nelson-Mead, SPSA etc. are the
@@ -477,9 +477,9 @@ SPSA is implemented in <code>vqe/optimizers.py</code>.
 </div>
 </div>
 
-<div id="outline-container-org90d463a" class="outline-2">
-<h2 id="org90d463a">Simulation</h2>
-<div class="outline-text-2" id="text-org90d463a">
+<div id="outline-container-org2f3130d" class="outline-2">
+<h2 id="org2f3130d">Simulation</h2>
+<div class="outline-text-2" id="text-org2f3130d">
 <p>
 We will do these simulations with the <code>qasm_simulator</code> backend provided by
 Qiskit, initially without noise. First we will demonstrate VQE with the single
@@ -487,33 +487,33 @@ layer RYRZ ansatz, and then with the single layer RX ansatz.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">from vqe.vqe import energy
-from vqe.optimizers import SPSA
+<pre class="src src-jupyter-python"><span style="color: #51afef;">from</span> vqe.vqe <span style="color: #51afef;">import</span> energy
+<span style="color: #51afef;">from</span> vqe.optimizers <span style="color: #51afef;">import</span> SPSA
 
 
-# The expectation value of the Hamiltonian
-def parameterized_energy(params, H, ansatz, **kwargs):
-    return energy(H, ansatz, params=params, **kwargs)
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">The expectation value of the Hamiltonian</span>
+<span style="color: #51afef;">def</span> <span style="color: #c678dd;">parameterized_energy</span>(params, H, ansatz, **kwargs):
+    <span style="color: #51afef;">return</span> energy(H, ansatz, params=params, **kwargs)
 
 
-# Random number generator
-seed = 42
-rng = np.random.default_rng(seed)
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Random number generator</span>
+<span style="color: #dcaeea;">seed</span> = <span style="color: #da8548; font-weight: bold;">42</span>
+<span style="color: #dcaeea;">rng</span> = np.random.default_rng(seed)
 
-# Optimizer
-maxiter = 1000
-save_steps = 50
-a = 2 * np.pi * 0.1
-c = 0.1
-A = 0.0001
-spsa = SPSA(a=a, c=c, A=A)
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Optimizer</span>
+<span style="color: #dcaeea;">maxiter</span> = <span style="color: #da8548; font-weight: bold;">1000</span>
+<span style="color: #dcaeea;">save_steps</span> = <span style="color: #da8548; font-weight: bold;">50</span>
+<span style="color: #dcaeea;">a</span> = <span style="color: #da8548; font-weight: bold;">2</span> * np.pi * <span style="color: #da8548; font-weight: bold;">0.1</span>
+<span style="color: #dcaeea;">c</span> = <span style="color: #da8548; font-weight: bold;">0.1</span>
+<span style="color: #dcaeea;">A</span> = <span style="color: #da8548; font-weight: bold;">0.0001</span>
+<span style="color: #dcaeea;">spsa</span> = SPSA(a=a, c=c, A=A)
 
-# VQE with RYRZ ansatz
-reps = 1
-thetas_yz = rng.uniform(0, 2 * np.pi, size=(4 * (reps + 1)))
-ryrz_ansatz = RYRZAnsatz(reps=reps)
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">VQE with RYRZ ansatz</span>
+<span style="color: #dcaeea;">reps</span> = <span style="color: #da8548; font-weight: bold;">1</span>
+<span style="color: #dcaeea;">thetas_yz</span> = rng.uniform(<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">2</span> * np.pi, size=(<span style="color: #da8548; font-weight: bold;">4</span> * (reps + <span style="color: #da8548; font-weight: bold;">1</span>)))
+<span style="color: #dcaeea;">ryrz_ansatz</span> = RYRZAnsatz(reps=reps)
 
-result_yz = spsa.minimize(
+<span style="color: #dcaeea;">result_yz</span> = spsa.minimize(
     parameterized_energy,
     thetas_yz,
     maxiter=maxiter,
@@ -523,7 +523,7 @@ result_yz = spsa.minimize(
     ansatz=ryrz_ansatz,
 )
 
-print(f"Lowest eigenvalue is {result_yz['fun']:.4f}.")
+<span style="color: #51afef;">print</span>(f<span style="color: #98be65;">"Lowest eigenvalue is {result_yz['fun']:.4f}."</span>)
 </pre>
 </div>
 
@@ -533,12 +533,12 @@ Lowest eigenvalue is -0.9990.
 
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"># VQE with RX ansatz
-reps = 1
-thetas_x = rng.uniform(0, 2 * np.pi, size=reps)
-rx_ansatz = RXAnsatz(reps=reps)
+<pre class="src src-jupyter-python"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">VQE with RX ansatz</span>
+<span style="color: #dcaeea;">reps</span> = <span style="color: #da8548; font-weight: bold;">1</span>
+<span style="color: #dcaeea;">thetas_x</span> = rng.uniform(<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">2</span> * np.pi, size=reps)
+<span style="color: #dcaeea;">rx_ansatz</span> = RXAnsatz(reps=reps)
 
-result_x = spsa.minimize(
+<span style="color: #dcaeea;">result_x</span> = spsa.minimize(
     parameterized_energy,
     thetas_x,
     maxiter=maxiter,
@@ -548,7 +548,7 @@ result_x = spsa.minimize(
     ansatz=rx_ansatz,
 )
 
-print(f"Lowest eigenvalue is {result_x['fun']:.4f}.")
+<span style="color: #51afef;">print</span>(f<span style="color: #98be65;">"Lowest eigenvalue is {result_x['fun']:.4f}."</span>)
 </pre>
 </div>
 
@@ -565,21 +565,21 @@ Qiskit Terra.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">from qiskit import Aer
-from qiskit.test.mock import FakeVigo
-from qiskit.providers.aer.noise import NoiseModel
+<pre class="src src-jupyter-python"><span style="color: #51afef;">from</span> qiskit <span style="color: #51afef;">import</span> Aer
+<span style="color: #51afef;">from</span> qiskit.test.mock <span style="color: #51afef;">import</span> FakeVigo
+<span style="color: #51afef;">from</span> qiskit.providers.aer.noise <span style="color: #51afef;">import</span> NoiseModel
 
-# Vigo noise model
-device_backend = FakeVigo()
-coupling_map = device_backend.configuration().coupling_map
-noise_model = NoiseModel.from_backend(device_backend)
-basis_gates = noise_model.basis_gates
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Vigo noise model</span>
+<span style="color: #dcaeea;">device_backend</span> = FakeVigo()
+<span style="color: #dcaeea;">coupling_map</span> = device_backend.configuration().coupling_map
+<span style="color: #dcaeea;">noise_model</span> = NoiseModel.from_backend(device_backend)
+<span style="color: #dcaeea;">basis_gates</span> = noise_model.basis_gates
 
-# BasicAer does not support noise, we need the simulator from Aer
-backend = Aer.get_backend("qasm_simulator")
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">BasicAer does not support noise, we need the simulator from Aer</span>
+<span style="color: #dcaeea;">backend</span> = Aer.get_backend(<span style="color: #98be65;">"qasm_simulator"</span>)
 
-# Noisy VQE with RYRZ ansatz
-result_yz_noisy = spsa.minimize(
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Noisy VQE with RYRZ ansatz</span>
+<span style="color: #dcaeea;">result_yz_noisy</span> = spsa.minimize(
     parameterized_energy,
     thetas_yz,
     maxiter=maxiter,
@@ -593,7 +593,7 @@ result_yz_noisy = spsa.minimize(
     basis_gates=basis_gates
 )
 
-print(f"Lowest eigenvalue is {result_yz_noisy['fun']:.4f}.")
+<span style="color: #51afef;">print</span>(f<span style="color: #98be65;">"Lowest eigenvalue is {result_yz_noisy['fun']:.4f}."</span>)
 </pre>
 </div>
 
@@ -603,8 +603,8 @@ Lowest eigenvalue is -0.8760.
 
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python"># Noisy VQE with RX ansatz
-result_x_noisy = spsa.minimize(
+<pre class="src src-jupyter-python"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">Noisy VQE with RX ansatz</span>
+<span style="color: #dcaeea;">result_x_noisy</span> = spsa.minimize(
     parameterized_energy,
     thetas_x,
     maxiter=maxiter,
@@ -618,7 +618,7 @@ result_x_noisy = spsa.minimize(
     basis_gates=basis_gates
 )
 
-print(f"Lowest eigenvalue is {result_x_noisy['fun']:.4f}.")
+<span style="color: #51afef;">print</span>(f<span style="color: #98be65;">"Lowest eigenvalue is {result_x_noisy['fun']:.4f}."</span>)
 </pre>
 </div>
 
@@ -634,33 +634,33 @@ the Hamiltonian. But we still come close to it.
 </div>
 </div>
 
-<div id="outline-container-orgaa5dce7" class="outline-2">
-<h2 id="orgaa5dce7">Visualization</h2>
-<div class="outline-text-2" id="text-orgaa5dce7">
+<div id="outline-container-org6f8ada5" class="outline-2">
+<h2 id="org6f8ada5">Visualization</h2>
+<div class="outline-text-2" id="text-org6f8ada5">
 <p>
 We can see the progress of the optimization, which might give us some insights
 into VQE.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-jupyter-python">iters = np.arange(0, maxiter + save_steps, save_steps)
+<pre class="src src-jupyter-python"><span style="color: #dcaeea;">iters</span> = np.arange(<span style="color: #da8548; font-weight: bold;">0</span>, maxiter + save_steps, save_steps)
 
-fig, ax = plt.subplots(figsize=(10, 8))
-ax.plot(iters, result_yz["log"]["fevals"], color="darkorange", linestyle="solid", label="RYRZ (noiseless)")
-ax.plot(iters, result_yz_noisy["log"]["fevals"], color="darkorange", linestyle="dashed", label="RYRZ (noisy)")
-ax.plot(iters, result_x["log"]["fevals"], color="dodgerblue", linestyle="solid", label="RX (noiseless)")
-ax.plot(iters, result_x_noisy["log"]["fevals"], color="dodgerblue", linestyle="dashed", label="RX (noisy)")
-ax.set_xlabel("Iterations")
-ax.set_ylabel("Energy")
+<span style="color: #dcaeea;">fig</span>, <span style="color: #dcaeea;">ax</span> = plt.subplots(figsize=(<span style="color: #da8548; font-weight: bold;">10</span>, <span style="color: #da8548; font-weight: bold;">8</span>))
+ax.plot(iters, result_yz[<span style="color: #98be65;">"log"</span>][<span style="color: #98be65;">"fevals"</span>], color=<span style="color: #98be65;">"darkorange"</span>, linestyle=<span style="color: #98be65;">"solid"</span>, label=<span style="color: #98be65;">"RYRZ (noiseless)"</span>)
+ax.plot(iters, result_yz_noisy[<span style="color: #98be65;">"log"</span>][<span style="color: #98be65;">"fevals"</span>], color=<span style="color: #98be65;">"darkorange"</span>, linestyle=<span style="color: #98be65;">"dashed"</span>, label=<span style="color: #98be65;">"RYRZ (noisy)"</span>)
+ax.plot(iters, result_x[<span style="color: #98be65;">"log"</span>][<span style="color: #98be65;">"fevals"</span>], color=<span style="color: #98be65;">"dodgerblue"</span>, linestyle=<span style="color: #98be65;">"solid"</span>, label=<span style="color: #98be65;">"RX (noiseless)"</span>)
+ax.plot(iters, result_x_noisy[<span style="color: #98be65;">"log"</span>][<span style="color: #98be65;">"fevals"</span>], color=<span style="color: #98be65;">"dodgerblue"</span>, linestyle=<span style="color: #98be65;">"dashed"</span>, label=<span style="color: #98be65;">"RX (noisy)"</span>)
+ax.set_xlabel(<span style="color: #98be65;">"Iterations"</span>)
+ax.set_ylabel(<span style="color: #98be65;">"Energy"</span>)
 ax.legend()
-fig.savefig("img/rx_log.png", bbox_inches="tight", dpi=90)
+fig.savefig(<span style="color: #98be65;">"static/images/rx_log.png"</span>, bbox_inches=<span style="color: #98be65;">"tight"</span>, dpi=<span style="color: #da8548; font-weight: bold;">90</span>)
 plt.close()
 </pre>
 </div>
 
 
-<div class="figure">
-<p><img src="img/rx_log.png" alt="rx_log.png" />
+<div id="orgb409d7b" class="figure">
+<p><img src="static/images/rx_log.png" alt="rx_log.png" />
 </p>
 </div>
 
@@ -683,9 +683,9 @@ we reach convergence.</li>
 </div>
 </div>
 
-<div id="outline-container-org1f9ef2a" class="outline-2">
-<h2 id="org1f9ef2a">Conclusion</h2>
-<div class="outline-text-2" id="text-org1f9ef2a">
+<div id="outline-container-org41708be" class="outline-2">
+<h2 id="org41708be">Conclusion</h2>
+<div class="outline-text-2" id="text-org41708be">
 <p>
 We demonstrated the VQE algorithm with a quantum simulator. We showed that it
 gives the lowest eigenvalue on a noiseless device. On a noisy device, it does
