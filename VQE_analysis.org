@@ -16,7 +16,15 @@ algorithm that can be used on NISQ devices to find the ground states of various
 quantum mechanical systems, most notably used in quantum chemistry[fn:2] and
 nuclear physics[fn:3]. Here we will see a demonstration of the variational
 quantum eigensolver with the Hamiltonian
-\[\begin{aligned} H = \begin{bmatrix} 1 & 0 & 0 & 0 \cr 0 & 0 & -1 & 0 \cr 0 & -1 & 0 & 0 \cr 0 & 0 & 0 & 1 \end{bmatrix}, \end{aligned}\]
+\begin{align}
+H =
+\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 0 & -1 & 0 \\
+0 & -1 & 0 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix},
+\end{align}
 whose eigenvalues can be calculated easily on a classical computer:
 
 #+begin_src jupyter-python
@@ -382,7 +390,19 @@ Physical Review Letters 120.21 (2018). [[https://arxiv.org/abs/1801.03897][https
 
 [fn:4] To see why the trace is necessary think of the matrix as a one
 dimensional vector:
-\[\begin{aligned}\begin{bmatrix}a & b \cr c & d\end{bmatrix} → \begin{bmatrix}a \cr b \cr c \cr d\end{bmatrix}.\end{aligned}\]
+\begin{align}
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+→
+\begin{bmatrix}
+a \\
+b \\
+c \\
+d
+\end{bmatrix}.
+\end{align}
 This inner product \((A, B) = \mathrm{Tr}(A^† B)\) is known as the Hilbert-Schmidt
 inner product which turns the vector space of those matrices in to a Hilbert
 space. Some details can be found in chapter 2 of [[https://dl.acm.org/doi/book/10.5555/1972505][Nielsen & Chuang]].
